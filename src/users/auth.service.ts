@@ -47,7 +47,7 @@ export class AuthService {
     return user;
   }
 
-  async signIn(email: string, password: string) {
+  async signIn({ email, password }) {
     const user = await this.usersService.findByEmail(email);
     if (!user) {
       throw new NotFoundException('User not Found!');
@@ -56,10 +56,10 @@ export class AuthService {
 
     const hash = (await scrypt(password, salt, 32)) as Buffer;
 
-    if (storedHash === hash.toString('hex')) {
-      return user;
-    } else {
+    if (storedHash !== hash.toString('hex')) {
       throw new UnauthorizedException('You are not authorized!');
     }
+
+    return user;
   }
 }
