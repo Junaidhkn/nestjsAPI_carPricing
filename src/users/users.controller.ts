@@ -19,7 +19,7 @@ export class UsersController {
     private readonly authService: AuthService,
   ) {}
 
-  @Post()
+  @Post('/signup')
   create(@Body() createUserDto: CreateUserDto) {
     return this.authService.signUp(createUserDto);
   }
